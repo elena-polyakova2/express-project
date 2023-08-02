@@ -17,6 +17,14 @@ const friends = [
   }
 ];
 
+//middleware
+app.use((req, res, next) => {
+  const start = Date.now();//get current time since January 1970
+  next(); //call to receive response
+  const delta = Date.now() - start; //amount in ms for request in node to be done
+  console.log(`${req.method} ${req.url} ${delta}ms`); //keep track of requests
+});
+
 //define routes
 app.get('/friends', (req, res) => {
   //set to treat data as json
