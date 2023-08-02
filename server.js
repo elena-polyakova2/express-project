@@ -17,7 +17,7 @@ const friends = [
   }
 ];
 
-//middleware
+//logging middleware
 app.use((req, res, next) => {
   const start = Date.now();//get current time since January 1970
   next(); //call to receive response
@@ -25,7 +25,27 @@ app.use((req, res, next) => {
   console.log(`${req.method} ${req.url} ${delta}ms`); //keep track of requests
 });
 
+//built in express middleware
+app.use(express.json());
+
 //define routes
+app.post('/friends', (req, res) => {
+
+  if (!req.body.name) {
+    return res.status(400).json({ //respond with code 400 with specific error message and don't execute the least of code
+      error: 'This Friend name does not exist'
+    }); 
+  }
+
+  const newFriend = {
+    id: friends.length,
+    name: req.body.name
+  }
+  friends.push(newFriend);
+
+  res.json(newFriend);
+});
+
 app.get('/friends', (req, res) => {
   //set to treat data as json
   res.json(friends);
@@ -41,7 +61,7 @@ app.get('/friends/:friendId', (req, res) => {
   } else {
     //return json as we use json already
     res.status(404).json({
-      error: "Friend does not exist"
+      error: 'Friend does not exist'
     });
   }
 });
