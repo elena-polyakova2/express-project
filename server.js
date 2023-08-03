@@ -1,5 +1,6 @@
-//import express package
+//import built-in methods
 const express = require('express');
+const path = require('path');
 
 //import
 const friendsRouter = require('./routes/friends.router');
@@ -17,6 +18,9 @@ app.use((req, res, next) => {
   const delta = Date.now() - start; //amount in ms for request in node to be done
   console.log(`${req.method}  ${req.baseUrl}${req.url} ${delta}ms`); //keep track of requests
 });
+
+//use express static file middleware to use node in front end
+app.use('/site', express.static(path.join(__dirname, 'public')));
 
 //built in express middleware
 app.use(express.json());
