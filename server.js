@@ -9,6 +9,10 @@ const messagesRouter = require('./routes/messages.router');
 //set the app to use express function
 const app = express();
 
+//set parameters to use to load templates
+app.set('view engine', 'hbs'); //handlebars
+app.set('views', path.join(__dirname, 'views'));
+
 const PORT = 3000;
 
 //logging middleware
@@ -24,6 +28,14 @@ app.use('/site', express.static(path.join(__dirname, 'public')));
 
 //built in express middleware
 app.use(express.json());
+
+//root route to rendes the handlebars file
+app.get('/', (req, res) => {
+  res.render('index', {
+    title: 'My Friends',
+    caption: 'Skiing in France.',
+  })
+});
 
 //tell the app to use the routers as middleware/ mounting on the app object
 app.use('/friends', friendsRouter);
